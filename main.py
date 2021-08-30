@@ -14,6 +14,7 @@ import random
 
 class person:
     name = 'Carlos'
+
     def setName(self, name):
         self.name = name
 
@@ -44,7 +45,7 @@ def record_audio(ask=False):
             print(ask)
         audio = recognizer.listen(source)
         try:
-            voice_data = recognizer.recognize_sphinx(audio)
+            voice_data = recognizer.recognize_google(audio)
         except sr.UnknownValueError:
             print('sorry, i didnt get that')
             talk('sorry, i didnt get that')
@@ -70,16 +71,24 @@ def respond(voice_data):
         talk(time)
     # DEFINE NOME DA PESSOA
     if there_exists(["my name is"]):
-        person_name = voice_data.replace('my name is' , '')
+        person_name = voice_data.replace('my name is', '')
         talk("okay, i will remember that " + person_name)
         person.setName(person_name)  # remember name in person object
     # NOME DA PESSOA
     if there_exists(["what is my name"]):
         talk("Your name must be " + person.name)
+    # How are you doiung
+    if 'how are you doing' in voice_data:
+        talk('im doing fine, im glad you asked ' + person.name)
+
+    ####### DARKSPOOK
+    if 'dark spook' in voice_data:
+        talk('SHUT THE FUCK UP DARKSPOOK YOU DIRTY LITTLE JEW')
+
     # SEARCH IN THE WEB ok
     if 'search' in voice_data:
-        search = record_audio('what do you want to search?')
         talk('what you wanna search for?')
+        search = record_audio('what do you want to search?')
         url = 'https://duckduckgo.com/?q=' + search
         webbrowser.get().open(url)
         talk('here is what i have found')
@@ -93,10 +102,10 @@ def respond(voice_data):
     if there_exists(["toss", "flip", "coin"]):
         moves = ["head", "tails"]
         cmove = random.choice(moves)
-        #playsound.playsound('K:\GLADOS_APRIMORADO/coin.mp3' , True)
+        # playsound.playsound('K:\GLADOS_APRIMORADO/coin.mp3' , True)
         talk("it became " + cmove)
-    #CALCULADORA
-    if there_exists(["plus","minus","multiply","divide","times","power","+","-","*","/"]):
+    # CALCULADORA
+    if there_exists(["plus", "minus", "multiply", "divide", "times", "power", "+", "-", "*", "/"]):
         opr = voice_data.split()[1]
 
         if opr == '+':
@@ -131,6 +140,7 @@ def respond(voice_data):
         whois = voice_data.replace('who is', '')
         informacaopessoa = wikipedia.summary(whois, 2)
         talk(informacaopessoa)
+    # WHERE AM I
     if 'where am I' in voice_data:
         g = geocoder.ip('me')
         print(g.lat)
@@ -154,28 +164,29 @@ while 1:
     print(voice_data)
     respond(voice_data)
 
-#  .''.
-# (~~~~)
-#   ||
-# __||__
+#   .''.
+#  (~~~~)
+#    ||
+#  __||__
 # /______\
-#  |  |' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-#  |  |'|o| - - - - - - - - - - - - - - - - - - - - - - - - -||
-#  |  |'| |                                                  ||
-#  |  |'| |                      . ' .                       ||
-#  |  |'| |                  . '       ' .                   ||
-#  |  |'| |              . '    .-'"'-.    ' .               ||
-#  |  |'| |          . '      ,"______ ".      ' .           ||
-#  |  |'| |      . '        /:  \     |  :\        ' .       ||
-#  |  |'| |  . '            ;  . \        ;            ' .   ||
-#  |  |'| |    ' .          \: . /       :/          . '     ||
-#  |  |'| |        ' .        `./_____| ,/       . '         ||
-#  |  |'| |            ' .      `-.,,.-'     . '             ||
-#  |  |'| |                ' .           . '                 ||
-#  |  |'| |                    ' .   . '                     ||
-#  |  |'| |                        '                         ||
-#  |  |'|o|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_||
-#  |  |'
-#  |  |'           BRASIL ACIMA DE TUDO
-#  |  |'                  DEUS ACIMA DE TODOS
-#  |  |
+#   |  |' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+#   |  |'|o| - - - - - - - - - - - - - - - - - - - - - - - - -||
+#   |  |'| |                                                  ||
+#   |  |'| |                      . ' .                       ||
+#   |  |'| |                  . '       ' .                   ||
+#   |  |'| |              . '    .-'"'-.    ' .               ||
+#   |  |'| |          . '      ,"______ ".      ' .           ||
+#   |  |'| |      . '        /:  \     |  :\        ' .       ||
+#   |  |'| |  . '            ;  . \        ;            ' .   ||
+#   |  |'| |    ' .          \: . /       :/          . '     ||
+#   |  |'| |        ' .        `./_____| ,/       . '         ||
+#   |  |'| |            ' .      `-.,,.-'     . '             ||
+#   |  |'| |                ' .           . '                 ||
+#   |  |'| |                    ' .   . '                     ||
+#   |  |'| |                        '                         ||
+#   |  |'|o|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_||
+#   |  |'
+#   |  |'           BRASIL ACIMA DE TUDO
+#   |  |'                  DEUS ACIMA DE TODOS
+#   |  |'           MORTE AO COMUNISMO
+#   |  |'                  GLORIA AO INTEGRALISMO
