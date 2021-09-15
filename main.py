@@ -13,7 +13,7 @@ import random
 
 
 class person:
-    name = 'Carlos'
+    name = 'Charles'
 
     def setName(self, name):
         self.name = name
@@ -134,7 +134,7 @@ def respond(voice_data):
         playsound.playsound('K:\GLADOS_APRIMORADO\MP3\space22.mp3', True)
     # STUKA ok
     if 'Stuka' in voice_data:
-        playsound.playsound('K:\PROJETOS PYTHON/stuka.mp3', True)
+        playsound.playsound('K:\_____ PYTHON ______\GLADOS_APRIMORADO\stuka.mp3', True)
     # WIKIPEDIA ok
     if 'who is' in voice_data:
         whois = voice_data.replace('who is', '')
