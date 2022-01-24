@@ -11,6 +11,12 @@ import wikipedia
 import geocoder
 import random
 
+#=============================================================
+# vozes de utilizacao
+pt_voice_id = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_PT-BR_MARIA_11.0"
+en_m_voice_id = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_DAVID_11.0"
+#=============================================================
+
 
 class person:
     name = 'Carlos'
@@ -23,11 +29,9 @@ class person:
 recognizer = sr.Recognizer()
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
-
+engine.setProperty('voice', pt_voice_id)
 
 ###########################################
-
 def talk(text):
     engine.say(text)
     engine.runAndWait()
@@ -45,21 +49,24 @@ def record_audio(ask=False):
             print(ask)
         audio = recognizer.listen(source)
         # sr.Microfone.adjust_for_ambient_noise(source) DESENVOLVER
+        # print(" - Languages: %s" % voice.languages)
         try:
-            voice_data = recognizer.recognize_google(audio, language='pt-BR')
+            voice_data = recognizer.recognize_google(audio, language='pt-BR') # RECONHECIMENTO DE VOZ, FAZER VARIAVEL QUE PODE MUDAR A LINGUA?
         except sr.UnknownValueError:
-            print('sorry, i didnt get that')
-            talk('sorry, i didnt get that')
+            print('perdao, nao entendi')
+            talk('perdao, nao entendi')
         except sr.RequestError:
-            print('I beg your pardom, but it seens that my speech services are down')
-            talk('I beg your pardom, but it seens that my speech services are down')
+            print('pesso desculpas, mas parece que voce esta sem internet, por favor verifique que a internet esta funcionando')
+            talk('pesso desculpas, mas parece que voce esta sem internet, por favor verifique que a internet esta funcionando')
         return voice_data
 
 
 def respond(voice_data):
     # NAME ok
-    if there_exists(["what is your name", "what's your name", "tell me your name"]):
-        talk('My Name Is Glados')
+    if there_exists(["Qual é o seu nome", "como voce se chama", "me diga seu nome","como se chama"]):
+        talk('me chamo Glados')
+
+
     # DATE INCOMPLETO
     if there_exists(["what's the time", "tell me the time", "what time is it"]):
         time = ctime().split(" ")[3].split(":")[0:2]
@@ -70,17 +77,23 @@ def respond(voice_data):
         minutes = time[1]
         time = f'{hours} {minutes}'
         talk(time)
+
+
     # DEFINE NOME DA PESSOA
     if there_exists(["my name is"]):
         person_name = voice_data.replace('my name is', '')
         talk("okay, i will remember that " + person_name)
         person.setName(person_name)  # remember name in person object
+
+
     # NOME DA PESSOA
     if there_exists(["what is my name"]):
         talk("Your name must be " + person.name)
     # How are you doiung
     if 'how are you doing' in voice_data:
         talk('im doing fine, im glad you asked ' + person.name)
+
+
 
     ####### DARKSPOOK
     if 'dark spook' in voice_data:
@@ -122,9 +135,9 @@ def respond(voice_data):
         else:
             talk("Wrong Operator")
     # MUSICA YOUTUBE ok
-    if 'play' in voice_data:
-        ytmusic = voice_data.replace('play', '')
-        talk('playing' + ytmusic + 'on youtube')
+    if 'tocar' in voice_data:
+        ytmusic = voice_data.replace('tocar', '')
+        talk('tocando' + ytmusic + 'no youtube')
         # print('music on youtube')
         pywhatkit.playonyt(ytmusic)
     # JOKE ok
@@ -158,8 +171,9 @@ def respond(voice_data):
 
 
 time.sleep(1)
-talk('How can i be of service')
-print('listening')
+talk('Como posso ser de ajuda a você?')
+print('Ouvindo')
+
 while 1:
     voice_data = record_audio()
     print(voice_data)
