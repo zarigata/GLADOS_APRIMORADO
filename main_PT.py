@@ -61,6 +61,9 @@ def record_audio(ask=False):
 
 
 def respond(voice_data):
+
+
+
     # NAME ok
     if there_exists(["qual é o seu nome", "como voce se chama", "me diga seu nome","como se chama","seu nome","nome"]):
         talk('me chamo Glados')
@@ -115,7 +118,7 @@ def respond(voice_data):
     if there_exists(["jogar moeda", "cara ou coroa", "atirar moeda"]):
         moves = ["Cara", "Coroa"]
         cmove = random.choice(moves)
-        # playsound.playsound('K:\GLADOS_APRIMORADO/coin.mp3' , True)
+        playsound.playsound('MP3/coin.mp3' , True)
         talk("sua moeda foi" + cmove)
     # CALCULADORA
     if there_exists(["mais", "menos", "multiplicar", "dividir", "vezes", "elevado", "+", "-", "*", "/"]):
@@ -183,6 +186,7 @@ def respond(voice_data):
 
 
 time.sleep(1)
+playsound.playsound('MP3/pinga.mp3' , True)
 talk('Como posso ser de ajuda a você?')
 print('Ouvindo')
 
