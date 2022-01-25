@@ -49,7 +49,6 @@ def record_audio(ask=False):
             print(ask)
         audio = recognizer.listen(source)
         # sr.Microfone.adjust_for_ambient_noise(source) DESENVOLVER
-        # print(" - Languages: %s" % voice.languages)
         try:
             voice_data = recognizer.recognize_google(audio, language='pt-BR') # RECONHECIMENTO DE VOZ, FAZER VARIAVEL QUE PODE MUDAR A LINGUA?
         except sr.UnknownValueError:
@@ -63,12 +62,12 @@ def record_audio(ask=False):
 
 def respond(voice_data):
     # NAME ok
-    if there_exists(["Qual é o seu nome", "como voce se chama", "me diga seu nome","como se chama"]):
+    if there_exists(["qual é o seu nome", "como voce se chama", "me diga seu nome","como se chama","seu nome","nome"]):
         talk('me chamo Glados')
 
 
     # DATE INCOMPLETO
-    if there_exists(["what's the time", "tell me the time", "what time is it"]):
+    if there_exists(["que horas sao", "me fala que horas sao", "qual sao as horas"]):
         time = ctime().split(" ")[3].split(":")[0:2]
         if time[0] == "00":
             hours = '12'
@@ -80,18 +79,18 @@ def respond(voice_data):
 
 
     # DEFINE NOME DA PESSOA
-    if there_exists(["my name is"]):
-        person_name = voice_data.replace('my name is', '')
-        talk("okay, i will remember that " + person_name)
+    if there_exists(["meu nome e"]):
+        person_name = voice_data.replace('meu nome e', '')
+        talk("okei, irei lembrar disso " + person_name)
         person.setName(person_name)  # remember name in person object
 
 
     # NOME DA PESSOA
-    if there_exists(["what is my name"]):
-        talk("Your name must be " + person.name)
+    if there_exists(["qual e meu nome"]):
+        talk("qual e meu nome" + person.name)
     # How are you doiung
-    if 'how are you doing' in voice_data:
-        talk('im doing fine, im glad you asked ' + person.name)
+    if 'como você está' in voice_data:
+        talk('Estou operacional ' + person.name)
 
 
 
@@ -100,8 +99,8 @@ def respond(voice_data):
         talk('SHUT THE FUCK UP DARKSPOOK YOU DIRTY LITTLE JEW')
 
     # SEARCH IN THE WEB ok
-    if 'search' in voice_data:
-        talk('what you wanna search for?')
+    if 'procurar' in voice_data:
+        talk('o que voce quer procurar?')
         search = record_audio('what do you want to search?')
         url = 'https://duckduckgo.com/?q=' + search
         webbrowser.get().open(url)
@@ -113,36 +112,40 @@ def respond(voice_data):
         webbrowser.get().open(url)
         print('here is what i have found')
     # MOEDA
-    if there_exists(["toss", "flip", "coin"]):
-        moves = ["head", "tails"]
+    if there_exists(["jogar moeda", "cara ou coroa", "atirar moeda"]):
+        moves = ["Cara", "Coroa"]
         cmove = random.choice(moves)
         # playsound.playsound('K:\GLADOS_APRIMORADO/coin.mp3' , True)
-        talk("it became " + cmove)
+        talk("sua moeda foi" + cmove)
     # CALCULADORA
-    if there_exists(["plus", "minus", "multiply", "divide", "times", "power", "+", "-", "*", "/"]):
+    if there_exists(["mais", "menos", "multiplicar", "dividir", "vezes", "elevado", "+", "-", "*", "/"]):
         opr = voice_data.split()[1]
 
         if opr == '+':
             talk(int(voice_data.split()[0]) + int(voice_data.split()[2]))
         elif opr == '-':
             talk(int(voice_data.split()[0]) - int(voice_data.split()[2]))
-        elif opr == 'multiply' or 'x' or 'times':
+        elif opr == 'multiplicar' or 'x' or 'vezes':
             talk(int(voice_data.split()[0]) * int(voice_data.split()[2]))
-        elif opr == 'divide':
+        elif opr == 'dividir':
             talk(int(voice_data.split()[0]) / int(voice_data.split()[2]))
-        elif opr == 'power':
+        elif opr == 'elevado':
             talk(int(voice_data.split()[0]) ** int(voice_data.split()[2]))
         else:
-            talk("Wrong Operator")
+            talk("Operador Errado")
     # MUSICA YOUTUBE ok
     if 'tocar' in voice_data:
         ytmusic = voice_data.replace('tocar', '')
         talk('tocando' + ytmusic + 'no youtube')
         # print('music on youtube')
         pywhatkit.playonyt(ytmusic)
-    # JOKE ok
-    if 'tell me a joke' in voice_data:
-        talk(pyjokes.get_joke())
+
+
+    # JOKE NAO PARA PORTUGUES
+    #if 'tell me a joke' in voice_data:
+    #    talk(pyjokes.get_joke())
+
+
     # SPACE ok
     if 'space' in voice_data:
         playsound.playsound('K:\GLADOS_APRIMORADO\MP3\space22.mp3', True)
@@ -150,12 +153,13 @@ def respond(voice_data):
     if 'Stuka' in voice_data:
         playsound.playsound('K:\PROJETOS PYTHON/stuka.mp3', True)
     # WIKIPEDIA ok
-    if 'who is' in voice_data:
-        whois = voice_data.replace('who is', '')
+    if 'quem é' in voice_data:
+        whois = voice_data.replace('quem é', '')
+        wikipedia.set_lang("pt")
         informacaopessoa = wikipedia.summary(whois, 2)
         talk(informacaopessoa)
     # WHERE AM I
-    if 'where am I' in voice_data:
+    if there_exists(["aonde eu estou", "qual minha posicao", "qual minha localizacao atual", "onde estou?"]):
         g = geocoder.ip('me')
         print(g.lat)
         print(g.lng)
@@ -163,11 +167,19 @@ def respond(voice_data):
         long = g.lng
         ondeestou = wikipedia.geosearch(lati, long, None, 3)
         talk(ondeestou)
+
+     # COMPRAR NA INTERNET
+    if there_exists(["quero comprar", "quero comprar uma ", "comprar"]):
+        talk("okei, aqui estao os resultados")
+        merlivre = voice_data.replace('quero comprar', '')
+        compra = 'https://lista.mercadolivre.com.br/' + merlivre
+        webbrowser.get().open(compra)
+
     # EXIT ok
-    if 'exit' in voice_data:
+    if 'sair' in voice_data:
         exit()
     else:
-        talk('hmmm. didnt get that, can you say it again?')
+        talk('Hmm, nao entendi, pode repetir por favor?')
 
 
 time.sleep(1)
@@ -204,4 +216,4 @@ while 1:
 #   |  |'           BRASIL ACIMA DE TUDO
 #   |  |'                  DEUS ACIMA DE TODOS
 #   |  |'           MORTE AO COMUNISMO
-#   |  |'                  GLORIA AO INTEGRALISMO
+#   |  |'                  GLORIA AO BRASIL
