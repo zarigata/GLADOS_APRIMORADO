@@ -13,7 +13,7 @@ import random
 
 #=============================================================
 # vozes de utilizacao
-pt_voice_id = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_PT-BR_MARIA_11.0"
+pt_voice_id = "brazil"
 en_m_voice_id = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_DAVID_11.0"
 #=============================================================
 
