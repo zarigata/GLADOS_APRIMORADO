@@ -5,7 +5,7 @@ import pyttsx3
 import speech_recognition as sr
 import pyjokes
 import playsound
-import pywhatkit
+#import pywhatkit
 import os
 import wikipedia
 import geocoder
