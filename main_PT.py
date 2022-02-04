@@ -4,7 +4,7 @@ import time
 import pyttsx3
 import speech_recognition as sr
 import pyjokes
-import playsound
+#import playsound
 #import pywhatkit
 import os
 import wikipedia
@@ -186,7 +186,7 @@ def respond(voice_data):
 
 
 time.sleep(1)
-playsound.playsound('MP3/pinga.mp3' , True)
+#playsound.playsound('MP3/pinga.mp3' , True)
 talk('Como posso ser de ajuda a você?')
 print('Ouvindo')
 
